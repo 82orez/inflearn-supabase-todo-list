@@ -13,7 +13,7 @@ export async function GET(request: Request) {
         mode: "insensitive", // 대소문자 구분 없이 검색
       },
     },
-    orderBy: { created_at: "desc" },
+    orderBy: { created_at: "asc" },
   });
 
   return NextResponse.json(todos);
