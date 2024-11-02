@@ -35,9 +35,27 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   const { id, title, completed } = await request.json();
 
+  // 현재 데이터베이스에 저장된 기존 할 일 데이터를 가져옵니다.
+  const existingTodo = await prisma.todo.findUnique({
+    where: { id },
+  });
+
+  if (!existingTodo) {
+    return NextResponse.json({ error: "Todo not found" }, { status: 404 });
+  }
+
+  // title 이 변경된 경우에만 updated_at을 업데이트합니다.
+  // ? 새로운 변수 data 에 client 에서 넘어온 completed 값만 먼저 넣어줍니다.
+  // 기존 할 일에 변경이 있을 경우에만 data 를 updated 한다.
+  const data: any = { completed };
+  if (title !== existingTodo.title) {
+    data.title = title;
+    data.updated_at = new Date(); // 현재 시간으로 updated_at을 업데이트
+  }
+
   const updatedTodo = await prisma.todo.update({
     where: { id },
-    data: { title, completed },
+    data,
   });
 
   return NextResponse.json(updatedTodo);
