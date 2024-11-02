@@ -3,7 +3,6 @@
 import { Button, Input } from "@material-tailwind/react";
 import SearchIcon from "@mui/icons-material/Search";
 import Todo from "@/components/todo";
-import { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 
 export default function Ui() {
