@@ -5,12 +5,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import Todo from "@/components/todo";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { queryClient } from "@/app/react-query-provider";
 
 export default function Ui() {
   const [searchInput, setSearchInput] = useState("");
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const fetchTodos = async () => {
     const res = await axios(`/api/todo?search=${searchInput}`);
