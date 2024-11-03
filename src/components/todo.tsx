@@ -8,12 +8,13 @@ import { LuSave } from "react-icons/lu";
 
 interface Props {
   id: number;
+  title: string;
 }
 
-export default function Todo({ id }: Props) {
+export default function Todo({ id, title }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [completed, setCompleted] = useState(false);
-  const [value, setValue] = useState("hello world TG");
+  const [value, setValue] = useState(title);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
