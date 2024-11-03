@@ -9,9 +9,14 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { queryClient } from "@/app/react-query-provider";
 
+export interface InterfaceTodo {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
 export default function Ui() {
   const [searchInput, setSearchInput] = useState("");
-  // const queryClient = useQueryClient();
 
   const fetchTodos = async () => {
     const res = await axios(`/api/todo?search=${searchInput}`);
@@ -54,9 +59,8 @@ export default function Ui() {
         onChange={(e) => setSearchInput(e.target.value)}
       />
 
-      {/*@ts-ignore*/}
-      {data.map((todo) => (
-        <Todo key={todo.id} id={todo.id} title={todo.title} />
+      {data.map((todo: InterfaceTodo) => (
+        <Todo key={todo.id} todo={todo} />
       ))}
 
       {/*@ts-ignore*/}

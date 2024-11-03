@@ -6,15 +6,11 @@ import CreateIcon from "@mui/icons-material/Create";
 import { BsTrash3 } from "react-icons/bs";
 import { LuSave } from "react-icons/lu";
 
-interface Props {
-  id: number;
-  title: string;
-}
-
-export default function Todo({ id, title }: Props) {
+// @ts-ignore
+export default function Todo({ todo }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [completed, setCompleted] = useState(false);
-  const [value, setValue] = useState(title);
+  const [value, setValue] = useState(todo.title);
+  const [completed, setCompleted] = useState(todo.completed);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
