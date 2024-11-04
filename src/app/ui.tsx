@@ -31,24 +31,30 @@ export default function Ui() {
 
   useEffect(() => {
     if (inputRef.current) {
+      // @ts-ignore
       inputRef.current.focus();
     }
   }, [data]);
 
-  // const createTodoMutation = useMutation({
-  //   mutationFn: async () => {
-  //     const res = await axios.post("/api/todo", {
-  //       title: "New todo",
-  //       completed: false,
-  //     });
-  //     return res.data;
-  //   },
-  //   onSuccess: () => {
-  //     // @ts-ignore
-  //     queryClient.invalidateQueries(["todos"]).then();
-  //     console.log(data);
-  //   },
-  // });
+  const createTodoMutation = useMutation({
+    mutationFn: async () => {
+      // throw new Error("Failed to create the todo item");
+      const res = await axios.post("/api/todo", {
+        title: "bad todo3",
+        completed: false,
+      });
+      return res.data;
+    },
+    onSuccess: () => {
+      // @ts-ignore
+      queryClient.invalidateQueries(["todos"]).then();
+      console.log(data);
+    },
+    onError: (error) => {
+      console.log(error);
+      alert("Failed to create todo. Please try again.");
+    },
+  });
 
   // if (isPending) return <p>Loading...</p>;
   if (error) return <p>Error loading notes</p>;
