@@ -76,7 +76,7 @@ export default function Ui() {
       {data?.map((todo: InterfaceTodo) => <Todo key={todo.id} todo={todo} />)}
 
       {/*@ts-ignore*/}
-      <Button color={"blue-gray"} className={"flex items-center"} onClick={() => createTodoMutation.mutate()}>
+      <Button color={"blue-gray"} className={"flex items-center"} onClick={() => createTodoMutation.mutate()} loading={createTodoMutation.isPending}>
         <AddIcon className={"mr-2"} />
         <div className={"text-md"}>Add Todo</div>
       </Button>
