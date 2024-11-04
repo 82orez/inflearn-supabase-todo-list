@@ -4,7 +4,7 @@ import { Button, Input } from "@material-tailwind/react";
 import SearchIcon from "@mui/icons-material/Search";
 import Todo from "@/components/todo";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { queryClient } from "@/app/react-query-provider";
@@ -17,6 +17,7 @@ export interface InterfaceTodo {
 
 export default function Ui() {
   const [searchInput, setSearchInput] = useState("");
+  const inputRef = useRef(null);
 
   const fetchTodos = async () => {
     const res = await axios(`/api/todo?search=${searchInput}`);
@@ -28,22 +29,28 @@ export default function Ui() {
     queryFn: fetchTodos,
   });
 
-  const createTodoMutation = useMutation({
-    mutationFn: async () => {
-      const res = await axios.post("/api/todo", {
-        title: "New todo",
-        completed: false,
-      });
-      return res.data;
-    },
-    onSuccess: () => {
-      // @ts-ignore
-      queryClient.invalidateQueries(["todos"]).then();
-      console.log(data);
-    },
-  });
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [data]);
 
-  if (isPending) return <p>Loading...</p>;
+  // const createTodoMutation = useMutation({
+  //   mutationFn: async () => {
+  //     const res = await axios.post("/api/todo", {
+  //       title: "New todo",
+  //       completed: false,
+  //     });
+  //     return res.data;
+  //   },
+  //   onSuccess: () => {
+  //     // @ts-ignore
+  //     queryClient.invalidateQueries(["todos"]).then();
+  //     console.log(data);
+  //   },
+  // });
+
+  // if (isPending) return <p>Loading...</p>;
   if (error) return <p>Error loading notes</p>;
 
   return (
@@ -57,11 +64,10 @@ export default function Ui() {
         placeholder={"Search TODO"}
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
+        ref={inputRef}
       />
 
-      {data.map((todo: InterfaceTodo) => (
-        <Todo key={todo.id} todo={todo} />
-      ))}
+      {data?.map((todo: InterfaceTodo) => <Todo key={todo.id} todo={todo} />)}
 
       {/*@ts-ignore*/}
       <Button color={"blue-gray"} className={"flex items-center"} onClick={() => createTodoMutation.mutate()}>
